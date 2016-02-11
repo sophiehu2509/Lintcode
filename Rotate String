@@ -1,0 +1,30 @@
+class Solution {
+public:
+    /**
+     * @param str: a string
+     * @param offset: an integer
+     * @return: nothing
+     */
+    void rotateString(string &str,int offset){
+        //wirte your code here
+        if (str=="") return;
+        if (offset==0) return;
+        if(offset>str.size())
+            offset=offset%str.size();
+            
+       recoverString(str, 0, str.size()-offset-1);
+       recoverString(str, str.size()-offset, str.size()-1);
+       recoverString(str, 0, str.size()-1);
+    }
+    
+    void recoverString (string &str,int start, int end)
+    {
+        char tempt=0;
+        for (int i=start, j=end; i<j;i++,j--)
+        {
+            tempt=str[i];
+            str[i]=str[j];
+            str[j]=tempt;
+        }
+    }
+};
