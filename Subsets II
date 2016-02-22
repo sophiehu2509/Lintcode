@@ -1,0 +1,29 @@
+class Solution {
+public:
+    /**
+     * @param S: A set of numbers.
+     * @return: A list of lists. All valid subsets.
+     */
+    vector<vector<int> > subsetsWithDup(const vector<int> &S) {
+        // write your code here
+        vector<int> vec;
+        vector<vector<int> > res;
+        res.push_back(vec);
+        vector<int> copy_S;
+        copy_S = S;
+        sort(copy_S.begin(), copy_S.end());
+        dfs(copy_S,  res,  vec,  0);
+        return res;
+    }
+    
+    void dfs(vector<int> &copy_S, vector<vector<int> > & res, vector<int> & vec, int pos){
+        for (int i = pos; i < copy_S.size(); i++){
+            if (i != pos && copy_S[i] == copy_S[i-1])
+                continue;
+            vec.push_back(copy_S[i]);
+            res.push_back(vec);
+            dfs(copy_S,  res,  vec,  i + 1);
+            vec.pop_back();
+        }
+    }
+};
