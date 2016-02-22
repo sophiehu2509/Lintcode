@@ -1,0 +1,27 @@
+class Solution {
+public:
+    /**
+     * @param S: A set of numbers.
+     * @return: A list of lists. All valid subsets.
+     */
+    vector<vector<int> > subsets(vector<int> &nums) {
+    	// write your code here
+        vector<int> vec;	
+    	vector<vector<int> > res;
+    	res.push_back(vec);
+    	sort(nums.begin(), nums.end());
+    	dfs(nums, res, vec, 0);
+    	return res;
+    	
+    }
+    void dfs(vector<int> &nums, vector<vector<int> > & res, vector<int> & vec, int pos){
+        for (int i = pos; i < nums.size(); i++){
+            vec.push_back(nums[i]);
+            res.push_back(vec);
+            dfs(nums, res, vec, i+1);
+            vec.pop_back();
+        }
+        
+    }
+    
+};
