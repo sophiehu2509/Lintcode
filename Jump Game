@@ -1,0 +1,27 @@
+class Solution {
+public:
+    /**
+     * @param A: A list of integers
+     * @return: The boolean answer
+     */
+    bool canJump(vector<int> A) {
+        // write you code here
+        int count =  A[0];
+        if (A[0] == 0 && A.size() >1)
+            return false;
+            
+        for (int i = 1; i< A.size()-1; i++)
+        {
+            --count;
+            if (count <= 0 && A[i] == 0)
+                return false;
+                
+            if (count < A[i])
+                count = A[i];
+                
+            
+        }
+            
+        return true;
+    }
+};
