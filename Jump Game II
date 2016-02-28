@@ -1,0 +1,30 @@
+class Solution {
+public:
+    /**
+     * @param A: A list of lists of integers
+     * @return: An integer
+     */
+    int jump(vector<int> A) {
+        // wirte your code here
+        queue <int> q;
+        q.push(A[0]);
+        int count = A[0];
+        int i =0;
+        int step =1;
+        
+        while (i<A.size()){
+            q.pop();
+            while (count--)
+            {
+            
+                q.push(A[++i]);
+                if (i == A.size()-1)
+                    return step;
+            }
+        count = q.front();
+        step += 1;
+        
+        }
+        return 0;
+    }
+};
