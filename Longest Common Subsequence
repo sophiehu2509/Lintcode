@@ -1,0 +1,30 @@
+class Solution {
+public:
+    /**
+     * @param A, B: Two strings.
+     * @return: The length of longest common subsequence of A and B.
+     */
+    int longestCommonSubsequence(string A, string B) {
+        // write your code here
+        int lenA = A.length();
+        int lenB = B.length();
+        
+        if (lenA < lenB || lenA == 0 || lenB == 0)
+            return 0;
+        
+        vector<vector<int>> vec (lenA+1, vector<int>(lenB + 1, 0));
+        
+        for (int i = 0; i<lenA; i++)
+        {
+            for (int j = 0; j<lenB; j++)
+            {
+                if (A[i] == B[j]){
+                    vec [i+1][j+1] = vec[i][j] + 1;
+                }else {
+                    vec[i+1][j+1] = max(max(vec[i][j], vec[i][j+1]), vec[i+1][j]);
+                }
+            }
+        }
+        return vec[lenA][lenB];
+    }
+};
