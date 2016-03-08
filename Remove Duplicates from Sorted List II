@@ -1,0 +1,47 @@
+/**
+ * Definition of ListNode
+ * class ListNode {
+ * public:
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int val) {
+ *         this->val = val;
+ *         this->next = NULL;
+ *     }
+ * }
+ */
+class Solution{
+public:
+    /**
+     * @param head: The first node of linked list.
+     * @return: head node
+     */
+    ListNode * deleteDuplicates(ListNode *head) {
+        // write your code here
+        if (head == NULL)
+            return NULL;
+            
+        ListNode * DummyHead = new ListNode (head -> val - 1);
+        DummyHead -> next = head;
+        
+        ListNode * pre = DummyHead;
+        ListNode * ptr = DummyHead;
+        
+        while (head)
+        {
+            if (pre -> val != head -> val && (head -> next == NULL || head -> next -> val !=  head -> val)){
+                
+                ptr -> next = head;
+                ptr = ptr -> next;
+
+            }
+            pre = head;
+            head =  head -> next;
+        }
+        
+        ptr -> next = NULL;
+        
+        return DummyHead -> next;
+  
+    }
+};
