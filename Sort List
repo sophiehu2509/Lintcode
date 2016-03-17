@@ -1,0 +1,61 @@
+/**
+ * Definition of ListNode
+ * class ListNode {
+ * public:
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int val) {
+ *         this->val = val;
+ *         this->next = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param head: The first node of linked list.
+     * @return: You should return the head of the sorted linked list,
+                    using constant space complexity.
+     */
+    ListNode *sortList(ListNode *head) {
+        // write your code here
+        if (!head || !head -> next)
+            return head;
+            
+        ListNode * slow = head;
+        ListNode * fast = head -> next;
+        while (fast && fast -> next)
+        {
+            slow = slow -> next;
+            fast = fast -> next -> next;
+        }
+        fast = slow -> next;
+        slow -> next = NULL;
+        
+        ListNode *  left = sortList (head);
+        ListNode * right = sortList (fast);
+        return mergeSort (left, right);
+    }
+    
+    ListNode * mergeSort (ListNode *left, ListNode *right)
+    {
+        ListNode * node = NULL;
+        if (!left)
+            return right;
+        if (!right)
+            return left;
+            
+        if (left -> val <= right -> val)
+        {
+            node = left;
+            node -> next = mergeSort(left -> next, right);
+        }
+        if (left -> val > right -> val)
+        {
+            node = right;
+            node -> next = mergeSort(left, right -> next);
+        }
+        return node;
+    }
+    
+};
