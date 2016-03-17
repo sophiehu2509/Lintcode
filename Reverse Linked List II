@@ -1,0 +1,90 @@
+/**
+ * Definition of singly-linked-list:
+ * 
+ * class ListNode {
+ * public:
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int val) {
+ *        this->val = val;
+ *        this->next = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param head: The head of linked list.
+     * @param m: The start position need to reverse.
+     * @param n: The end position need to reverse.
+     * @return: The new head of partial reversed linked list.
+     */
+    ListNode *reverseBetween(ListNode *head, int m, int n) {
+        // write your code here
+        if ( m == n )
+         return head;
+    
+    int p1 = 1;
+    ListNode * reverse_begin = head;
+    ListNode * reverse_end = head;
+    while (p1 < m - 1 )
+    {
+        reverse_begin = reverse_begin -> next;
+        p1 ++;
+    }
+    
+    ListNode * cur = NULL;
+    ListNode * pos = NULL;
+    ListNode * pre = NULL;
+   
+    if (m != 1){
+        pre = reverse_begin -> next;
+        cur = pre -> next;
+        pre -> next = NULL;
+        reverse_end =  pre;
+        
+        while (p1 < n - 1 && cur != NULL)
+        {
+            pos = cur -> next;
+            reverse_begin -> next = cur;
+            cur -> next = pre;
+            pre = cur;
+            cur = pos;
+            if (pos != NULL)
+              pos = pos-> next;
+            
+            p1 ++;
+        }
+        reverse_end -> next = cur;
+        
+    }
+    else {
+        pre = head;
+        ListNode *  dummyHead = new ListNode (head -> val -1);
+        dummyHead -> next = head;
+        cur = pre -> next;
+        pos = cur -> next;
+        pre -> next = NULL;
+        reverse_end =  pre;
+        
+        while (p1 < n && cur != NULL)
+        {
+            pos = cur -> next;
+            dummyHead -> next = cur;
+            cur -> next = pre;
+            pre = cur;
+            cur = pos;
+            if (pos != NULL)
+                pos = pos-> next;
+      
+            p1 ++;
+        }
+        reverse_end -> next = cur;
+        
+        return dummyHead -> next;
+    }
+    return head;
+    
+}
+    
+};
