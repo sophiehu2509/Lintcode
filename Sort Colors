@@ -1,0 +1,46 @@
+class Solution{
+public:
+    /**
+     * @param nums: A list of integer which is 0, 1 or 2 
+     * @return: nothing
+     */    
+    void sortColors(vector<int> &nums) {
+        // write your code here
+        int len = nums.size();
+        int  index_red = 0;
+        int index_blue = len - 1;
+        int i =0;
+        
+        
+        while ( i <= index_blue && index_red != index_blue)
+        {
+            
+            if (nums[index_red] == 0)
+            {
+                index_red ++; 
+                continue;
+            }
+            if (nums[index_blue] == 2)
+            {
+                index_blue --; 
+                continue;
+            }
+           
+            if (nums[i] == 2 )
+            {
+                nums[i] = nums[index_blue];
+                nums[index_blue] = 2;
+                index_blue --;
+            } 
+             if (nums[i] == 0 && i > index_red)
+            {
+                nums[i] = nums[index_red];
+                nums[index_red] = 0;
+                index_red ++;
+            }
+           i ++;
+        }
+        
+        
+    }
+};
