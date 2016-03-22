@@ -1,0 +1,52 @@
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return: An integer denotes the sum of max two non-overlapping subarrays
+     */
+    int maxTwoSubArrays(vector<int> nums) {
+        // write your code here
+        vector<int> maxRight (nums.size() + 1, -2147483648);
+        vector<int> maxLeft (nums.size() + 1, -2147483648);
+        int sum = nums[0];
+        maxRight[0]= nums[0];
+        
+        for (int i = 1; i< nums.size(); i++)
+        {
+            if (nums[i] < maxRight[i - 1]+ nums[i])
+            {
+                maxRight[i]= maxRight[i - 1] + nums[i]; 
+            }
+            else {
+                 maxRight[i]= nums[i];
+            }
+            
+        } 
+        
+        maxLeft[nums.size() - 1] = nums[nums.size() - 1];
+        for (int j = nums.size() - 2; j >= 0; j--)
+        {
+            
+            if (nums[j]< maxLeft[j + 1]+ nums[j])
+            {
+                maxLeft[j]= maxLeft[j + 1]+ nums[j]; 
+            }
+            else {
+                 maxLeft[j]= nums[j];
+            }
+            
+        } 
+        
+        int result = -2147483648;
+        for (int i = 0; i<nums.size(); i++)
+        {
+            for (int j = i + 1; j< nums.size() ; j++)
+            {
+                int res = maxRight[i] + maxLeft[j];
+                result = max (result, res);
+            }
+            
+        }
+        return result;
+    }
+};
