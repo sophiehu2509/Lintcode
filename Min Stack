@@ -1,0 +1,38 @@
+class MinStack {
+    stack <int> data;
+    stack <int> min_stack;
+    
+public:
+    MinStack() {
+        // do initialization if necessary
+   
+    }
+
+    void push(int number) {
+            
+        data.push(number);
+        if (min_stack.empty() || number <= min_stack.top())
+        {
+            min_stack.push(number);
+        }
+    }
+
+    int pop() {
+        // write your code here
+        if (data.empty())
+            return 0;
+            
+        if (data.top()== min_stack.top())
+        {
+            min_stack.pop();
+        }
+        int top = data.top();
+         data.pop();
+         return top;
+    }
+
+    int min() {
+            
+        return min_stack.top();
+    }
+};
