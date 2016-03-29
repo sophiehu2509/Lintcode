@@ -1,0 +1,56 @@
+/**
+ * Definition of ListNode
+ * class ListNode {
+ * public:
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int val) {
+ *         this->val = val;
+ *         this->next = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param hashTable: A list of The first node of linked list
+     * @return: A list of The first node of linked list which have twice size
+     */    
+    vector<ListNode*> rehashing(vector<ListNode*> hashTable) {
+        //Build new hashing
+        int len = hashTable.size() * 2;
+        vector <ListNode* > vec;
+        for (int i = 0; i<len; i++)
+        {
+            vec.push_back(NULL);
+        }
+        for (int i = 0; i<hashTable.size(); i++)
+        {
+                ListNode* node = hashTable[i];
+                while (node != NULL){
+                    
+                    addnode (vec, node->val);
+                    node = node -> next;
+                }
+        }
+        return vec;
+    }
+
+    
+    void addnode (vector<ListNode*> &vec,  int number){
+        int new_index = (number + vec.size()) % vec.size();
+        
+        if (vec[new_index] == NULL) {
+            vec[new_index] = new ListNode(number);
+        }
+        else 
+        {
+            ListNode * L = vec[new_index];
+            while (L ->next != NULL){
+                 L = L -> next;
+            }
+                
+            L-> next = new ListNode(number);
+        }
+    }
+};
