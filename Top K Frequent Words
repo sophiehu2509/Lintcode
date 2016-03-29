@@ -1,0 +1,52 @@
+class Node {
+public:
+    int time;
+    string word;
+    Node(int _time, string _word) {
+        time = _time, word = _word;
+    };
+    bool operator<(const Node& obj) const {
+        return time > obj.time || time == obj.time && word < obj.word;
+    }
+};
+
+
+class Solution {
+public:
+    /**
+     * @param words an array of string
+     * @param k an integer
+     * @return an array of string
+     */
+    vector<string> topKFrequentWords(vector<string>& words, int k) {
+        // Write your code here
+        map <string, int> hashmap;
+        map <string, int>::iterator it;
+        
+        for (int i = 0; i<words.size(); i++)
+        {
+            string word = words[i];
+            if (hashmap.find(word) == hashmap.end())
+            {
+                hashmap[word] = 1;
+            }else
+            {
+                hashmap[word]++;
+            }
+        }
+        
+        vector <Node> vec;
+        vector<string> res;
+        
+        for (it = hashmap.begin(); it != hashmap.end(); it++)
+        {
+            vec.push_back(Node(it -> second, it->first));
+        }  
+        sort (vec.begin(), vec.end());
+        for (int i = 0; i<k; i++)
+            res.push_back(vec[i].word);
+  
+        return res;
+    }
+    
+};
