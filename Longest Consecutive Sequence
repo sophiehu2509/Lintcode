@@ -1,0 +1,31 @@
+ class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return an integer
+     */
+    int longestConsecutive(vector<int> &num) {
+        // write you code here
+         if (num.size() <=1)
+            return num.size();
+            
+        unordered_map<int, int> hashmap;
+        int maxlen = 0;
+        for (int i = 0; i<num.size(); i++)
+        {
+            if (hashmap.find(num[i]) != hashmap.end())
+                continue;
+            int leftlen = hashmap.find(num[i] - 1) != hashmap.end()?  hashmap[num[i] - 1]: 0;
+            int rightlen = hashmap.find(num[i] + 1) != hashmap.end()? hashmap[num[i] + 1]: 0;
+            int len = rightlen + leftlen + 1;
+            //cout << leftlen << endl;
+            hashmap[num[i]]= len;
+            hashmap[num[i] - leftlen]= len;
+            hashmap[num[i] + rightlen]= len;
+            if (maxlen < len ) 
+                maxlen = len;
+        }
+        return maxlen;
+    }
+   
+};
