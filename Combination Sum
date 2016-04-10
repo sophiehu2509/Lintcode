@@ -1,0 +1,36 @@
+class Solution {
+public:
+    /**
+     * @param candidates: A list of integers
+     * @param target:An integer
+     * @return: A list of lists of integers
+     */
+    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+        // write your code here
+        vector<vector<int> > res;
+        vector<int> vec;
+        sort (candidates.begin(), candidates.end());
+        addHelper(res, vec, candidates, target, 0);
+        return res;
+        
+    }
+    void addHelper ( vector<vector<int> > &res, vector<int> & vec, vector<int> &candidates, int sum, int pos){
+        
+        if (sum < 0)
+            return;
+        
+        if (sum == 0){
+            res.push_back(vec);
+        }
+        for (int i = pos; i<candidates.size(); i++)
+        {
+            vec.push_back(candidates[i]);
+            addHelper(res, vec, candidates, sum - candidates[i], i);
+            vec.pop_back();
+        }
+        
+        
+        
+    }
+    
+};
