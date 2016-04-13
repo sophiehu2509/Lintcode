@@ -1,0 +1,62 @@
+/**
+ * Definition for Directed graph.
+ * struct DirectedGraphNode {
+ *     int label;
+ *     vector<DirectedGraphNode *> neighbors;
+ *     DirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param graph: A list of Directed graph node
+     * @return: Any topological order for the given graph.
+     */
+    vector<DirectedGraphNode*> topSort(vector<DirectedGraphNode*> graph) {
+        // write your code here
+        vector<DirectedGraphNode*> vec;
+        unordered_map <DirectedGraphNode*, int> countrd;
+        int begin = 0;
+        
+        
+        for (int i = 0; i<graph.size(); i++){
+            for (int j = 0; j< graph[i]->neighbors.size(); j++)
+            {
+                if (countrd.find(graph[i]->neighbors[j]) != countrd.end())
+                    countrd[graph[i]->neighbors[j]] += 1;
+                else 
+                  countrd[graph[i]->neighbors[j]] = 1;
+            } 
+            
+        }
+                  
+        for (int i = 0; i<graph.size(); i++){
+            if (countrd[graph[i]] == 0){
+                begin = i;
+                vec.push_back(graph[begin]);
+                dfs(graph[begin], vec, countrd, graph);
+            }
+        }
+  
+        return vec;
+    }
+    
+    void dfs (DirectedGraphNode* i, vector<DirectedGraphNode*> &vec, unordered_map <DirectedGraphNode*, int> &countrd, vector<DirectedGraphNode*> & graph)
+    {
+        countrd[i] -- ;
+        for (int j = 0; j< i->neighbors.size(); j++)
+        {
+            countrd[i->neighbors[j]] --;
+                
+            if (countrd[i->neighbors[j]] == 0){
+                vec.push_back(i->neighbors[j]);
+                dfs(i->neighbors[j], vec, countrd, graph);
+            }
+            
+        }   
+    
+        
+        
+    }
+    
+};
