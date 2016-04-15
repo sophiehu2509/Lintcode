@@ -1,0 +1,101 @@
+class Solution {
+public:
+    /**
+      * @param start, a string
+      * @param end, a string
+      * @param dict, a set of string
+      * @return a list of lists of string
+      */
+    vector<vector<string>> findLadders(string start, string end, unordered_set<string> & dict){
+        
+        unordered_map<string, vector<string>> hashmap;
+        unordered_set<string> foreGarden;
+        unordered_set<string> backGarden;
+        foreGarden.insert(start);
+        backGarden.insert(end);
+        bool direction = false;
+        vector<vector<string>> res;
+        vector<string> vec;
+        vec.push_back(start);
+         
+        if (start.size() == 1 && end.size() == 1)
+        {
+             vec.push_back(end);
+             res.push_back(vec);
+             return res;
+        }
+
+        int st = 0;
+        if ( buildTree(foreGarden, backGarden, hashmap, dict, direction))
+            bfs (hashmap, res, vec, start, end, st, 0);
+        
+        return res;
+    }
+    
+    bool buildTree (unordered_set<string> &foreGarden,unordered_set<string>& backGarden,  unordered_map<string, vector<string>> &hashmap, unordered_set<string> &dict, bool direction){
+        if(foreGarden.empty()) 
+            return false;
+            
+        bool done = false;
+        unordered_set<string> nextGarden;
+        if (backGarden.size() > foreGarden.size())
+            return buildTree(backGarden, foreGarden, hashmap, dict, !direction);
+        
+        for (auto &word: foreGarden) dict.erase(word);
+        for (auto &word: backGarden) dict.erase(word);
+            
+        for (auto &it: foreGarden)
+        {
+            string word = it;
+            
+            for (auto &c : word)
+            {
+                char c0 = c;
+                for (c = 'a'; c<='z'; c++)
+                {
+                    if(c!= c0)
+                    {
+                        if (backGarden.count(word))
+                        {
+                            done = true;
+                            direction==false? hashmap[it].push_back(word): hashmap[word].push_back(it);
+                        }
+                        else if (!done && dict.count(word))
+                        {
+                            nextGarden.insert(word);
+                            direction==false? hashmap[it].push_back(word): hashmap[word].push_back(it);
+                        }
+                    }
+                }
+                c = c0;
+            }
+        }
+        
+        return done || buildTree( nextGarden, backGarden, hashmap, dict, direction);
+ 
+    } 
+    
+        void bfs(unordered_map<string, vector<string>> &hashmap, vector<vector<string>>& res, vector<string>& vec, string begin, string end, int &step, int pos)
+        {
+           
+            if (begin == end)
+            {
+                res.push_back(vec);
+                return;
+            }
+            
+            
+            for (int i = pos; i<hashmap[begin].size(); i++)
+            {
+                vec.push_back(hashmap[begin][i]);
+                string ss = hashmap[begin][i];
+                step ++;
+                bfs(hashmap, res, vec, ss, end, step, pos );
+                step--;
+                vec.pop_back();
+            }
+        }
+        
+
+    
+};
