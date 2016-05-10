@@ -1,0 +1,92 @@
+/**
+ * Definition of Interval:
+ * classs Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this->start = start;
+ *         this->end = end;
+ *     }
+ */
+ 
+  class MinSegmentTree {
+    public:
+        int start, end, min;
+        MinSegmentTree * left, *right;
+        MinSegmentTree(int start, int end) {
+          this->start = start, this->end = end;
+          //this -> min = min; 
+          this->left = this->right = NULL;
+      }
+        MinSegmentTree(int start, int end, int min) {
+          this->start = start, this->end = end;
+          this -> min = min; 
+          this->left = this->right = NULL;
+      }
+    };
+    
+class Solution { 
+public:
+   // MinSegmentTree * build (vector<int> &A, int start, int end);
+   // int find_min(MinSegmentTree * root, int start, int end);
+    /**
+     *@param A, queries: Given an integer array and an query list
+     *@return: The result list
+     */
+    vector<int> intervalMinNumber(vector<int> &A, vector<Interval> &queries) {
+        // write your code here
+        vector<int> res;
+        MinSegmentTree * root = build (A, 0, A.size() - 1);
+        
+        for (int i = 0; i< queries.size(); i++)
+        {
+            res.push_back(find_min(root, queries[i].start, queries[i].end));
+        }
+        
+        return res;
+        
+    }
+    int find_min(MinSegmentTree * root, int start, int end)
+    {
+        int q1 = root -> start;
+        int q2 = root -> end;
+        int mid = (q1 + q2)/2;
+        
+        if (q1 == start && q2 == end)
+            return root -> min;
+            
+        if (end <= mid) return find_min(root -> left, start, end);
+        else if (start > mid) return find_min(root ->right, start, end);
+        else return min(find_min(root ->left, start, mid), find_min(root -> right, mid+1, end));
+        
+    }
+    MinSegmentTree * build (vector<int> &A, int start, int end)
+    {
+        if (start > end)
+            return NULL;
+          
+        
+          int min_ = 0;
+            
+        MinSegmentTree * root = new MinSegmentTree (start, end);
+       
+        if (start == end)
+            return new MinSegmentTree (start, end, A[start]);
+            
+        int mid = (start + end)/2;
+        if (start != end)
+        {
+            root -> left = build (A, start, mid);
+            root -> right = build (A, mid + 1, end);
+        }
+        if (root-> left ==NULL)
+            root-> min = root->right->min;
+        if (root-> right == NULL)
+            root-> min = root->left -> min;
+        else
+          root -> min = min(root ->left -> min, root->right->min);
+        
+        return root;
+    }
+    
+   
+};
