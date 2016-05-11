@@ -1,0 +1,88 @@
+/**
+ * Definition of Interval:
+ * classs Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this->start = start;
+ *         this->end = end;
+ *     }
+ */
+ class SegmentTree {
+public:
+     int start, end;
+     long long sum;
+     SegmentTree * left, * right;
+     SegmentTree (int start, int end)
+     {
+         this -> start = start;
+         this -> end = end;
+        // this -> sum = sum;
+         this -> left = this -> right = NULL;
+     }
+     SegmentTree (int start, int end, long long sum)
+     {
+         this -> start = start;
+         this -> end = end;
+         this -> sum = sum;
+         this -> left = this -> right = NULL;
+     }
+     
+ };
+ 
+class Solution { 
+public:
+    /**
+     *@param A, queries: Given an integer array and an query list
+     *@return: The result list
+     */
+    vector<long long> intervalSum(vector<int> &A, vector<Interval> &queries) {
+        // write your code here
+        vector<long long> res;
+        
+        SegmentTree * root = build(A, 0, A.size() - 1 );
+        for (int i = 0; i<queries.size(); i++)
+            res.push_back(helper (root, queries[i].start, queries[i].end));
+        
+        return res;   
+        
+    }
+    
+    long long helper (SegmentTree * root, int start, int end)
+    {
+        if (start == root -> start && root -> end == end)
+            return root -> sum;
+        int mid = (root -> start + root -> end)/2;
+        
+        if (end <= mid)
+            return helper (root -> left, start, end);
+        if (mid < start)
+            return helper(root-> right, start, end);
+        else 
+            return helper (root -> left, start, mid) + helper(root-> right, mid + 1, end);
+    }
+    
+    SegmentTree * build (vector<int> &A, int start, int end){
+        if (start > end)
+            return NULL;
+            
+        if (start == end)
+            return new SegmentTree (start, start, A[start]);
+        
+        SegmentTree * root = new SegmentTree(start, end);
+        
+        if (start != end)
+        {
+            int mid = (start + end)/2;
+            root -> left = build (A, start, mid);
+            root -> right = build (A, mid + 1, end);
+        }
+         if (root-> left ==NULL)
+            root-> sum = root->right->sum;
+        if (root-> right == NULL)
+            root-> sum = root->left -> sum;
+        else
+            root -> sum = root -> left -> sum + root -> right -> sum;
+            
+        return root;
+    }
+};
